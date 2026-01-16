@@ -1,0 +1,18 @@
+experiment:
+  name: fedgsp_v0
+  seeds: [0, 1, 2, 3, 4]
+
+data:
+  domains: ["SM", "BIO", "SN"]
+  train_ratio: 0.8
+  val_ratio: 0.1
+
+model:
+  hidden_dim: 64
+  bandpass_M: 8
+  spectral_k: 64        # 拉普拉斯特征值数量
+
+train:
+  local_epochs: 50
+  lr: 0.001
+  weight_decay: 0.0
