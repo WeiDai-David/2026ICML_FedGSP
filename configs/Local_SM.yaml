@@ -1,0 +1,25 @@
+experiment:
+  name: Local_SM
+  seeds: [0]
+
+data:
+  domains:
+    - MUTAG
+    - BZR
+    - COX2
+    - DHFR
+    - PTC_MR
+    - AIDS
+    - NCI1
+  train_ratio: 0.8
+  val_ratio: 0.1
+
+model:
+  hidden_dim: 64
+  bandpass_M: 8
+  spectral_k: 64
+
+train:
+  local_epochs: 200
+  lr: 0.001
+  weight_decay: 0.0
