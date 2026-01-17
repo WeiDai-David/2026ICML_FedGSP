@@ -9,7 +9,7 @@ from data.load_data import load_domain
 from data.split import split_graphs
 from models.gnn import GNN
 from models.client_alpha import ClientAlpha
-from trainers.local_trainer import train_one_epoch, evaluate
+from trainers.local_trainer_fixed import train_one_epoch, evaluate
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -21,10 +21,10 @@ def run_one_seed(cfg, seed):
 
     domains = cfg["data"]["domains"]
     local_epochs = cfg["train"]["local_epochs"]
-
+    # 跑 fixed band-pass local + 纯GNN classify
     methods = {
         "Local": False,
-        "fedgsp": True,
+        # "fedgsp": True,
     }
 
     for method_name, use_spectral in methods.items():
@@ -50,8 +50,6 @@ def run_one_seed(cfg, seed):
                     print("  x unique:", torch.unique(g0.x).numel())
             print("  y unique:", torch.unique(torch.stack([g.y for g in ds])).tolist())
 
-            # 也把 dataset 级别元信息打印出来（需要你在 load_domain 里暂时 return dataset 而不是 list）
-            
             train_g, val_g, test_g = split_graphs(
                 graphs,
                 seed=seed,
@@ -132,7 +130,7 @@ def run_one_seed(cfg, seed):
 
 def main():
     # ---------- load config (Windows-safe) ----------
-    with open("configs/Local_SM.yaml", "rb") as f:
+    with open("configs/Local_SN.yaml", "rb") as f:
         content = f.read().decode("utf-8", errors="ignore")
     cfg = yaml.safe_load(content)
 
@@ -151,7 +149,8 @@ def main():
 
     # ---------- summary ----------
     summary = {}
-    methods = ["Local", "fedgsp"]
+    # methods = ["Local", "fedgsp"]
+    methods = ["Local"]
 
     for method in methods:
         summary[method] = {}

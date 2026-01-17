@@ -1,6 +1,6 @@
 import torch
 from models.spectral_filter import spectral_filter
-from models.bandpass import build_bandpass_dictionary
+from models.bandpass import build_fixedbandpass_dictionary
 from utils.laplacian import compute_laplacian_eig
 
 
@@ -24,7 +24,7 @@ def get_node_features(data, alpha, device, spectral_k=64, use_spectral=True):
         data.edge_index, data.num_nodes, k=spectral_k
     )
 
-    B = build_bandpass_dictionary(
+    B = build_fixedbandpass_dictionary(
         lambda_vals, M=alpha.logits.numel()
     )
 
